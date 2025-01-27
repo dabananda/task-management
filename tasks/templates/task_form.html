@@ -1,19 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form | Dabananda Mitra</title>
+  <link rel="stylesheet" href="{% static 'styles/output.css' %}">
 </head>
 <body>
-  <h2>Employee</h2>
-  <hr>
-  <br>
-  <form action="" method="post">
-    {% csrf_token %}
-    {{form}}
-    <br>
-    <button type="submit">Submit</button>
-  </form>
+  <div class="w-1/2 mx-auto p-3">
+    {% if message %}
+      <p class="bg-green-400 text-lg">{{ message }}</p>
+    {% endif %}
+    <p class='text-3xl mb-2'>Create Task</p>
+    <hr>
+    <form action="" method="post" class="my-5">
+      {% csrf_token %}
+      {{ form }}
+      <button type="submit" class="bg-green-500 p-2 text-white w-full mx-auto block mt-3">CREATE</button>
+    </form>
+  </div>
 </body>
 </html>
