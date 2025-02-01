@@ -1,5 +1,5 @@
 from django import forms
-from tasks.models import Task
+from tasks.models import Task, TaskDetail
 
 class TaskForm(forms.Form):
   title = forms.CharField(max_length=250, label="Task Title")
@@ -48,23 +48,16 @@ class TaskModelForm(StyledFormMixing, forms.ModelForm):
       'due_date': forms.SelectDateWidget,
       'assigned_to': forms.CheckboxSelectMultiple
     }
-    # widgets = {
-    #   'title': forms.TextInput(attrs={
-    #     'class': "border border-gray-400 w-full px-2 py-1 mb-2",
-    #     'placeholder': "Task title"
-    #   }),
-    #   'description': forms.Textarea(attrs={
-    #     'class': "border border-gray-400 w-full px-2 py-1 mb-2",
-    #     'placeholder': "Task description"
-    #   }),
-    #   'due_date': forms.SelectDateWidget(attrs={
-    #     'class': "border border-gray-400 px-2 py-1 mb-2"
-    #   }),
-    #   'assigned_to': forms.CheckboxSelectMultiple(attrs={
-    #     'class': "border border-gray-400 px-2 py-1 mb-2"
-    #   })
-    # }
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.apply_styled_widgets()
+
+class TaskDetailModelForm(StyledFormMixing, forms.ModelForm):
+  class Meta:
+    model = TaskDetail
+    fields = ['priority', 'notes']
+    
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.apply_styled_widgets()

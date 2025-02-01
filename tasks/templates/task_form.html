@@ -9,14 +9,17 @@
 </head>
 <body>
   <div class="w-1/2 mx-auto p-3">
-    {% if message %}
-      <p class="bg-green-400 text-lg">{{ message }}</p>
+    {% if messages %}
+      {% for message in messages %}
+        <p class="bg-green-400 p-2 mb-3 text-lg">{{ message }}</p>
+      {% endfor %}
     {% endif %}
     <p class='text-3xl mb-2'>Create Task</p>
     <hr>
     <form action="" method="post" class="my-5">
       {% csrf_token %}
-      {{ form }}
+      {{ task_form }}
+      {{ task_detail_form }}
       <button type="submit" class="bg-green-500 p-2 text-white w-full mx-auto block mt-3">CREATE</button>
     </form>
   </div>

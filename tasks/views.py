@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import Count, Q
-from tasks.forms import TaskForm, TaskModelForm
+from tasks.forms import TaskForm, TaskModelForm, TaskDetailModelForm
 from tasks.models import Employee, Task
 from django.http import HttpResponse
+from django.contrib import messages
 
 def admin_dashboard(request):
   counts = Task.objects.aggregate(
@@ -36,14 +37,21 @@ def test(request):
   return render(request, 'test.html')
 
 def create_task(request):
-  form = TaskModelForm()
+  task_form = TaskModelForm()
+  task_detail_form = TaskDetailModelForm()
   if request.method == 'POST':
-    form = TaskModelForm(request.POST)
-    if form.is_valid():
+    task_form = TaskModelForm(request.POST)
+    task_detail_form = TaskDetailModelForm(request.POST)
+    if task_form.is_valid() and task_detail_form.is_valid():
       ''' For Django Model Form Data'''
-      form.save()
-      return render(request, 'task_form.html', {'form': form, 'message': 'Task ceated successfully!'})
-  context = {'form': form}
+      task = task_form.save()
+      task_detail = task_detail_form.save(commit=False)
+      task_detail.task = task
+      task_detail.save()
+      messages.success(request, "Task created successfully!")
+      return redirect('create-task')
+      # return render(request, 'task_form.html', {'form': task_form, 'message': 'Task ceated successfully!'})
+  context = {'task_form': task_form, 'task_detail_form': task_detail_form}
   return render(request, "task_form.html", context)
 
 def view_task(request):
