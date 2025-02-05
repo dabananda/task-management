@@ -169,6 +169,12 @@
           </a>
         </div>
 
+        {% if messages %}
+          {% for message in messages %}
+            <p class="bg-rose-400 p-2 my-3 text-lg">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+
         {% comment %} Task Table {% endcomment %}
         {% block tasks %}{% endblock tasks %}
       </main>
